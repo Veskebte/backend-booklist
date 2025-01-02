@@ -82,7 +82,7 @@ class BookController extends Controller
         }
 
         $validated = $request->validate([
-            'isbn' => 'nullable|unique:books,isbn'.$id,
+            'isbn' => 'nullable|unique:books,isbn,'.$id,
             'judul' => 'nullable',
             'penulis' => 'nullable',
             'penerbit' => 'nullable',
@@ -92,11 +92,11 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            if ($book->foto && \Storage::exists('public/'.$book->foto)) {
-                \Storage::delete('public/'.$book->foto);
+            if ($book->foto && \Storage::exists('public/' . $book->foto)) {
+                \Storage::delete('public/' . $book->foto);
             }
 
-            $path = $request->file('foto')->storage('books', 'public');
+            $path = $request->file('foto')->store('books', 'public');
             $validated['foto'] = $path;
         }
 
